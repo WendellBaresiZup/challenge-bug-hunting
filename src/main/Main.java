@@ -23,7 +23,7 @@ public class Main {
         SearchStrategy searchStrategy = new TitleSearchStrategy();
 
         int menu = 0;
-        scanner.nextLine(); // Consumir a quebra de linha
+
 
         while (menu != 9) {
             System.out.println("\n=== Sistema de Gerenciamento de Vídeos ===");
@@ -37,12 +37,48 @@ public class Main {
             System.out.println("7. Ordenar Vídeos por Data de Públicação");
             System.out.println("8. Exibir Relatório de Estatísticas");
             System.out.println("9. Sair");
+
+            menu = scanner.nextInt();
+            scanner.nextLine(); // Consumir a quebra de linha
+
+            switch (menu){
+                case 1:
+                    adicionarVideo();
+                    break;
+                case 2:
+                    listarVideos();
+                    break;
+                case 3:
+                    buscarVideo();
+                    break;
+                case 4:
+                    editarVideo();
+                    break;
+                case 5:
+                    excluirVideo();
+                    break;
+                case 6:
+                    filtrarVideo();
+                    break;
+                case 7:
+                    ordenarVideo();
+                    break;
+                case 8:
+                    exibirRelatorio();
+                    break;
+                case 9:
+                    System.out.println("Saindo do Sistema!");
+                    break;
+                default:
+                    System.out.println("opção não existe!");
+                    break;
+            }
         }
 
         scanner.close();
     }
 
-    public void adicionarVideo(){
+    public static void adicionarVideo(){
         System.out.print("Digite o título do vídeo: ");
         String titulo = scanner.nextLine();
         System.out.print("Digite a descrição do vídeo: ");
@@ -65,20 +101,40 @@ public class Main {
         }
     }
 
-    public void listarVideos() {
+    public static void listarVideos() {
         List<Video> videos = videoService.listVideos();
         for (Video video : videos) {
             System.out.println(video);
         }
     }
 
-    public void buscarVideo() {
+    public static void buscarVideo() {
         System.out.print("Digite o título para busca: ");
         String query = scanner.nextLine();
         List<Video> resultados = searchStrategy.search(videoService.listVideos(), query);
         for (Video video : resultados) {
             System.out.println(video);
         }
+    }
+
+    public static void editarVideo(){
+
+    }
+
+    public static void excluirVideo(){
+
+    }
+
+    public static void filtrarVideo(){
+
+    }
+
+    public static void ordenarVideo(){
+
+    }
+
+    public static void exibirRelatorio(){
+
     }
 
 }
