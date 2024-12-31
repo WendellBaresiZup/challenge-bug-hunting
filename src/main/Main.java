@@ -1,14 +1,12 @@
 package main;
 
 import controller.VideoManager;
-import model.Video;
 import repository.FileVideoRepositoryImpl;
 import service.VideoService;
 import service.VideoServiceImpl;
 import strategy.SearchStrategy;
-import strategy.TitleSearchStrategyImpl;
+import strategy.SearchStrategyImpl;
 
-import java.util.List;
 import java.util.Scanner;
 
 public class Main {
@@ -17,9 +15,9 @@ public class Main {
     static Scanner scanner = new Scanner(System.in);
 
     public static void main(String[] args) {
-        Scanner scanner = new Scanner(System.in);
-        VideoService videoService = new VideoServiceImpl(new FileVideoRepositoryImpl("videos.txt"));
-        SearchStrategy searchStrategy = new TitleSearchStrategyImpl();
+        FileVideoRepositoryImpl fileVideoRepository = new FileVideoRepositoryImpl("videos.txt");
+        SearchStrategy searchStrategy = new SearchStrategyImpl();
+        VideoService videoService = new VideoServiceImpl(fileVideoRepository,searchStrategy);
         VideoManager videoManager = new VideoManager(videoService);
 
         int menu = 0;
@@ -49,7 +47,7 @@ public class Main {
                     listarVideos(videoManager);
                     break;
                 case 3:
-                    //buscarVideo();
+                    buscarVideo();
                     break;
                 case 4:
                     editarVideo();
@@ -110,14 +108,14 @@ public class Main {
        videos.forEach(System.out::println);
     }
 
-    //public static void buscarVideo() {
-    //   System.out.print("Digite o título para busca: ");
-    //    String query = scanner.nextLine();
-    //    List<Video> resultados = searchStrategy.search(videoService.listVideos(), query);
-    //    for (Video video : resultados) {
-    //        System.out.println(video);
-    //    }
-    //}
+    public static void buscarVideo(VideoManager videoManager) {
+       System.out.print("Digite o título para busca: ");
+       String titulo = scanner.nextLine();
+
+       var videos = videoManager.pesquisarVideoPeloTitulo(titulo);
+       videos.forEach(System.out::println);
+
+    }
 
     public static void editarVideo(){
 
