@@ -15,11 +15,14 @@ public class FileVideoRepositoryImpl implements VideoRepository {
 
     @Override
     public void save(Video video) {
+        if (video == null){
+            throw new IllegalArgumentException("Vídeo não pode ser nulo");
+        }
         try (BufferedWriter bw = new BufferedWriter(new FileWriter(file, true))) {
             bw.write(video.toString());
             bw.newLine();
         } catch (IOException e) {
-            // Ignorar erros por enquanto
+            System.out.println("Erro ao salvar o vídeo!");
         }
     }
 
@@ -35,7 +38,7 @@ public class FileVideoRepositoryImpl implements VideoRepository {
                 }
             }
         } catch (IOException e) {
-            // Ignorar erros por enquanto
+            System.out.println("Erro ao buscar a lista de vídeos!");
         }
         return videos;
     }
