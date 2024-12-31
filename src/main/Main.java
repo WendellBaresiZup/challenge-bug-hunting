@@ -2,11 +2,11 @@ package main;
 
 import controller.VideoManager;
 import model.Video;
-import repository.FileVideoRepository;
+import repository.FileVideoRepositoryImpl;
 import service.VideoService;
 import service.VideoServiceImpl;
 import strategy.SearchStrategy;
-import strategy.TitleSearchStrategy;
+import strategy.TitleSearchStrategyImpl;
 
 import java.util.List;
 import java.util.Scanner;
@@ -18,8 +18,8 @@ public class Main {
 
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
-        VideoService videoService = new VideoServiceImpl(new FileVideoRepository("videos.txt"));
-        SearchStrategy searchStrategy = new TitleSearchStrategy();
+        VideoService videoService = new VideoServiceImpl(new FileVideoRepositoryImpl("videos.txt"));
+        SearchStrategy searchStrategy = new TitleSearchStrategyImpl();
         VideoManager videoManager = new VideoManager(videoService);
 
         int menu = 0;
@@ -27,7 +27,7 @@ public class Main {
 
         while (menu != 9) {
             System.out.println("\n=== Sistema de Gerenciamento de Vídeos ===");
-            System.out.print("Escolha uma opção: ");
+            System.out.println("Escolha uma opção: ");
             System.out.println("1. Adicionar Vídeo");
             System.out.println("2. Listar Vídeos");
             System.out.println("3. Pesquisar Vídeo por Título");
@@ -46,10 +46,10 @@ public class Main {
                     adicionarVideo(videoManager);
                     break;
                 case 2:
-                    listarVideos();
+                    listarVideos(videoManager);
                     break;
                 case 3:
-                    buscarVideo();
+                    //buscarVideo();
                     break;
                 case 4:
                     editarVideo();
@@ -81,7 +81,7 @@ public class Main {
     public static void adicionarVideo(VideoManager videoManager){
 
         try {
-            System.out.println("===Dicas para adicionar o video===");
+            System.out.println("=== Dicas para adicionar o video ===");
             System.out.println("!!O título do vídeo não pode ser nulo!!");
             System.out.println("!!A descrição do vídeo não pode ser nulo!!");
             System.out.println("!!A duração do vídeo tem que ser número ");
@@ -105,21 +105,19 @@ public class Main {
 
     }
 
-    public static void listarVideos() {
-        List<Video> videos = videoService.listVideos();
-        for (Video video : videos) {
-            System.out.println(video);
-        }
+    public static void listarVideos(VideoManager videoManager) {
+       var videos = videoManager.listarVideo();
+       videos.forEach(System.out::println);
     }
 
-    public static void buscarVideo() {
-        System.out.print("Digite o título para busca: ");
-        String query = scanner.nextLine();
-        List<Video> resultados = searchStrategy.search(videoService.listVideos(), query);
-        for (Video video : resultados) {
-            System.out.println(video);
-        }
-    }
+    //public static void buscarVideo() {
+    //   System.out.print("Digite o título para busca: ");
+    //    String query = scanner.nextLine();
+    //    List<Video> resultados = searchStrategy.search(videoService.listVideos(), query);
+    //    for (Video video : resultados) {
+    //        System.out.println(video);
+    //    }
+    //}
 
     public static void editarVideo(){
 
