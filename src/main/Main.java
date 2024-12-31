@@ -1,5 +1,6 @@
 package main;
 
+import controller.VideoManager;
 import model.Video;
 import repository.FileVideoRepository;
 import service.VideoService;
@@ -7,8 +8,6 @@ import service.VideoServiceImpl;
 import strategy.SearchStrategy;
 import strategy.TitleSearchStrategy;
 
-import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.List;
 import java.util.Scanner;
 
@@ -21,6 +20,7 @@ public class Main {
         Scanner scanner = new Scanner(System.in);
         VideoService videoService = new VideoServiceImpl(new FileVideoRepository("videos.txt"));
         SearchStrategy searchStrategy = new TitleSearchStrategy();
+        VideoManager videoManager = new VideoManager(videoService);
 
         int menu = 0;
 
@@ -43,7 +43,7 @@ public class Main {
 
             switch (menu){
                 case 1:
-                    adicionarVideo();
+                    adicionarVideo(videoManager);
                     break;
                 case 2:
                     listarVideos();
@@ -78,27 +78,31 @@ public class Main {
         scanner.close();
     }
 
-    public static void adicionarVideo(){
-        System.out.print("Digite o título do vídeo: ");
-        String titulo = scanner.nextLine();
-        System.out.print("Digite a descrição do vídeo: ");
-        String descricao = scanner.nextLine();
-        System.out.print("Digite a duração do vídeo (em minutos): ");
-        int duracao = scanner.nextInt();
-        scanner.nextLine(); // Consumir a quebra de linha
-        System.out.print("Digite a categoria do vídeo: ");
-        String categoria = scanner.nextLine();
-        System.out.print("Digite a data de publicação (dd/MM/yyyy): ");
-        String dataStr = scanner.nextLine();
+    public static void adicionarVideo(VideoManager videoManager){
+
         try {
-            SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
-            Date dataPublicacao = sdf.parse(dataStr);
-            Video video = new Video(titulo, descricao, duracao, categoria, dataPublicacao);
-            videoService.addVideo(video);
-            System.out.println("Vídeo adicionado com sucesso!");
-        } catch (Exception e) {
-            System.out.println("Erro ao adicionar vídeo.");
+            System.out.println("===Dicas para adicionar o video===");
+            System.out.println("!!O título do vídeo não pode ser nulo!!");
+            System.out.println("!!A descrição do vídeo não pode ser nulo!!");
+            System.out.println("!!A duração do vídeo tem que ser número ");
+
+            System.out.print("Digite o título do vídeo: ");
+            String titulo = scanner.nextLine();
+            System.out.print("Digite a descrição do vídeo: ");
+            String descricao = scanner.nextLine();
+            System.out.print("Digite a duração do vídeo (em minutos): ");
+            String duracao = scanner.nextLine();
+            System.out.print("Digite a categoria do vídeo: ");
+            String categoria = scanner.nextLine();
+            System.out.print("Digite a data de publicação (dd/MM/yyyy): ");
+            String dataPublicacao = scanner.nextLine();
+
+            videoManager.adicionarVideo(titulo, descricao, Integer.parseInt(duracao), categoria, dataPublicacao);
+        } catch (IllegalArgumentException e){
+            System.out.println("Erro ao salvar o vídeo " + e.getMessage());
         }
+
+
     }
 
     public static void listarVideos() {
