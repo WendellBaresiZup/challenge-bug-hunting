@@ -9,6 +9,7 @@ import service.VideoServiceImpl;
 import strategy.SearchStrategy;
 import strategy.SearchStrategyImpl;
 
+import java.util.List;
 import java.util.Scanner;
 
 public class Main {
@@ -64,7 +65,7 @@ public class Main {
                     ordenarVideo();
                     break;
                 case 8:
-                    exibirRelatorio();
+                    exibirRelatorio(videoManager);
                     break;
                 case 9:
                     System.out.println("Saindo do Sistema!");
@@ -222,9 +223,25 @@ public class Main {
     }
 
     public static void filtrarVideo(VideoManager videoManager){
-            System.out.println("Digite a categoria que deseja filtrar: ");
+            System.out.println("Digite a categoria que deseja filtrar. Tipos de Categoria: Documentário, Filme, Série: ");
+            String categoria = scanner.nextLine();
 
-            videoManager.pesquisarVideoPelaCategoria();
+            try {
+                Categoria categoriaFiltrada = Categoria.valueOf(categoria.toUpperCase());
+
+                List<Video> filterVideos = videoManager.pesquisarVideoPelaCategoria(categoriaFiltrada);
+
+                if (filterVideos.isEmpty()){
+                    System.out.println("Nenhum vídeo encontrado para a categoria: " + categoriaFiltrada);
+                } else {
+                    System.out.println("Vídeos encontrados na categoria: " + categoriaFiltrada);
+                    for (Video video : filterVideos){
+                        System.out.println(video);
+                    }
+                }
+            } catch (IllegalArgumentException e){
+                System.out.println("Categoria Inválida! Tente Novamente. Essas são os Tipos de Categorias: Documentário, Filme, Série");
+            }
 
     }
 
@@ -232,8 +249,8 @@ public class Main {
 
     }
 
-    public static void exibirRelatorio(){
-
+    public static void exibirRelatorio(VideoManager videoManager){
+        videoManager.relatorioEstatisticas();
     }
 
 }
