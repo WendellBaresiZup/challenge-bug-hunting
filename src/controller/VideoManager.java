@@ -36,8 +36,12 @@ public class VideoManager {
         System.out.println("Vídeo excluído com sucesso");
     }
 
-    public List<Video> pesquisarVideoPelaCategoria(Categoria query){
-        return videoService.searchVideo(String.valueOf(query));
+    public List<Video> pesquisarVideoPelaCategoria(Categoria categoria){
+        return videoService.searchVideo(String.valueOf(categoria));
+    }
+
+    public void relatorioEstatisticas(){
+        videoService.relatorioEstatisticas();
     }
 
 }
