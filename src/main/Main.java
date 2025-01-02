@@ -1,6 +1,7 @@
 package main;
 
 import controller.VideoManager;
+import model.Video;
 import repository.FileVideoRepositoryImpl;
 import service.VideoService;
 import service.VideoServiceImpl;
@@ -47,10 +48,10 @@ public class Main {
                     listarVideos(videoManager);
                     break;
                 case 3:
-                    buscarVideo();
+                    buscarVideo(videoManager);
                     break;
                 case 4:
-                    editarVideo();
+                    editarVideo(videoManager);
                     break;
                 case 5:
                     excluirVideo();
@@ -82,7 +83,7 @@ public class Main {
             System.out.println("=== Dicas para adicionar o video ===");
             System.out.println("!!O título do vídeo não pode ser nulo!!");
             System.out.println("!!A descrição do vídeo não pode ser nulo!!");
-            System.out.println("!!A duração do vídeo tem que ser número ");
+            System.out.println("!!A duração do vídeo tem que ser número positivo e maior que zero!!");
 
             System.out.print("Digite o título do vídeo: ");
             String titulo = scanner.nextLine();
@@ -117,9 +118,68 @@ public class Main {
 
     }
 
-    public static void editarVideo(){
+    public static Video solicitaNovosDadosDoVideo(){
+        System.out.print("Digite o Novo Título do Vídeo: ");
+        String titulo = scanner.nextLine();
+        System.out.print("Digite a Nova Descrição do Vídeo: ");
+        String descricao = scanner.nextLine();
+        System.out.print("Digite a Nova Duração do Vídeo (em minutos): ");
+        String duracao = scanner.nextLine();
+        System.out.print("Digite a Nova Categoria do Vídeo(EX: Futebol/Comédia/Infantil): ");
+        String categoria = scanner.nextLine();
+        System.out.print("Digite a Nova Data de Publicação (dd/MM/yyyy)");
+        String dataPublicacao = scanner.nextLine();
+
+        return new Video(titulo, descricao, Integer.parseInt(duracao), categoria, dataPublicacao);
+    }
+
+    public static void editarVideo(VideoManager videoManager){
+        System.out.println("=== Dicas para Editar o Video ===");
+        System.out.println("!!O título do vídeo não pode ser nulo!!");
+        System.out.println("!!A descrição do vídeo não pode ser nulo!!");
+        System.out.println("!!A duração do vídeo tem que ser número positivo e maior que zero!!");
+
+        System.out.println("Digite o título do vídeo: ");
+        String titulo = scanner.nextLine();
+
+        var videos = videoManager.pesquisarVideoPeloTitulo(titulo);
+        if (videos.isEmpty()) {
+            System.out.println("Título de vídeo não encontrado!");
+        } else if (videos.size() == 1){
+            var video = videos.get(0);
+            System.out.println("Vídeo encontrado: " + video);
+
+            System.out.print("Deseja editar este vídeo? (S/N): ");
+            var simNao = scanner.nextLine();
+            if (simNao.equalsIgnoreCase("S")){
+                var novosDadosDoVideo = solicitaNovosDadosDoVideo();
+                videoManager.editarVideo(video, novosDadosDoVideo);
+            } else {
+                System.out.println("Edição do Vídeo foi Cancelada!");
+            }
+        } else {
+            System.out.println("Mais de um vídeo foi encontrado pelo título informado, por favor indicar o index do título desejado");
+            for (int i = 0; i < videos.size(); i++){
+                System.out.println("Index: " + i + " - " + videos.get(i));
+            }
+            int index = scanner.nextInt();
+            scanner.nextLine(); // quebra da linha
+            if (index < 0 || index >= videos.size()) {
+                System.out.println("Index inválido!!");
+                return;
+            }
+            var video = videos.get(index);
+            if (video == null){
+                System.out.println("Vídeo não encontrado na lista!!");
+            } else {
+                var novosDadosDoVideo = solicitaNovosDadosDoVideo();
+                videoManager.editarVideo(video, novosDadosDoVideo);
+            }
+        }
 
     }
+
+
 
     public static void excluirVideo(){
 

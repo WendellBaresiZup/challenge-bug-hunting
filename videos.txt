@@ -1,1 +1,2 @@
-futebol;futebol dos cria;15;futebol;15/10/2021
+Futebol Profissional;Futebol dos Cria profi;15;futebol;15/10/2021
+Futebol Amador;Futebol dos Cria;15;Futebol;15/10/2022

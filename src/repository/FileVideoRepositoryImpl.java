@@ -43,5 +43,26 @@ public class FileVideoRepositoryImpl implements VideoRepository {
         return videos;
     }
 
+    @Override
+    public void update(Video videoOriginal, Video videoComNovosDados) {
+        if (videoComNovosDados == null || videoComNovosDados.getTitulo() == null || videoComNovosDados.getTitulo().isEmpty()){
+            throw new IllegalArgumentException("Vídeo com Novos Dados não pode ser nulo e também não pode ter o título vazio");
+        }
+        List<Video> videos = findAll();
+        try (BufferedWriter bw = new BufferedWriter(new FileWriter(file))) {
+            for (Video video : videos){
+                if (video.getTitulo().toLowerCase().trim().equals(videoOriginal.getTitulo().toLowerCase().trim())){
+                    bw.write(videoComNovosDados.toString());
+                    bw.newLine();
+                } else {
+                    bw.write(video.toString());
+                    bw.newLine();
+                }
+            }
+        } catch (IOException e) {
+            System.out.println("Erro ao atualizar o vídeo!");
+        }
+    }
+
 
 }
