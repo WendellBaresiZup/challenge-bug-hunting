@@ -12,6 +12,5 @@ public interface VideoService {
     void updateVideo(Video videoOriginal, Video videoNovosDados);
     void deleteByTitulo(String titulo);
     void searchVideoByCategory(Categoria query);
-
-
+    void relatorioEstatisticas();
 }
