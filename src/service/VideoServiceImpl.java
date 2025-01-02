@@ -56,8 +56,18 @@ public class VideoServiceImpl implements VideoService {
         repository.deleteByTitulo(titulo);
     }
 
-    public List<Video> searchVideoByCategory(Categoria query){
-        return searchStrategy.searchByTitle(repository.findAll(), String.valueOf(query));
+    public void searchVideoByCategory(Categoria query){
+        List<Video> videos = repository.findAll();
+        List<Video> videosFilter = searchStrategy.searchByCategory(videos, query);
+        videosFilter.forEach(this::showDetails);
+    }
+
+    private void showDetails(Video video){
+        System.out.println("Titulo: " + video.getTitulo());
+        System.out.println("Descrição: " + video.getDescricao());
+        System.out.println("Duração: " + video.getDuracao());
+        System.out.println("Categoria: " + video.getCategoria());
+        System.out.println("Data de Publicação: " + video.getDataPublicacao());
     }
 
 

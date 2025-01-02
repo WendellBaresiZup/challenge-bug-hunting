@@ -11,7 +11,7 @@ public interface VideoService {
     List<Video> searchVideo(String query);
     void updateVideo(Video videoOriginal, Video videoNovosDados);
     void deleteByTitulo(String titulo);
-    List<Video> searchVideoByCategory(Categoria query);
+    void searchVideoByCategory(Categoria query);
 
 
 }

@@ -224,9 +224,7 @@ public class Main {
     public static void filtrarVideo(VideoManager videoManager){
             System.out.println("Digite a categoria que deseja filtrar: ");
 
-            //videoManager.pesquisarVideoPelaCategoria(query);
-            var videos = videoManager.pesquisarVideoPelaCategoria(query);
-            videos.forEach(System.out::println);
+            videoManager.pesquisarVideoPelaCategoria();
 
     }
 
