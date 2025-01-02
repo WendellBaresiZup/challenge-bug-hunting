@@ -2,20 +2,20 @@ package model;
 
 public enum Categoria {
     Documentario("Documentário"),
-    Filmes("Filme"),
-    Serie("Serie");
+    Filme("Filme"),
+    Serie("Série");
 
     Categoria(String descricao) {
     }
 
 
     public static Categoria categoriaDesejada(String string){
-        try {
-            return Categoria.valueOf(string.toUpperCase());
-        }catch (IllegalArgumentException e){
-            System.out.println("Esta Categoria é inválida!");
-            System.out.println("Tipos de Categoria: Documentário, Filme, Série");
-        }
+        //try {
+        //    return Categoria.valueOf(string.toUpperCase());
+        //}catch (IllegalArgumentException e){
+        //    System.out.println("Esta Categoria é inválida!");
+        //}
+        //return null;
         return null;
     }
 

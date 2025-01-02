@@ -15,7 +15,7 @@ public class FileVideoRepositoryImpl implements VideoRepository {
 
     @Override
     public void save(Video video) {
-        if (video == null){
+        if (video == null) {
             throw new IllegalArgumentException("Vídeo não pode ser nulo");
         }
         try (BufferedWriter bw = new BufferedWriter(new FileWriter(file, true))) {
@@ -45,13 +45,13 @@ public class FileVideoRepositoryImpl implements VideoRepository {
 
     @Override
     public void update(Video videoOriginal, Video videoComNovosDados) {
-        if (videoComNovosDados == null || videoComNovosDados.getTitulo() == null || videoComNovosDados.getTitulo().isEmpty()){
+        if (videoComNovosDados == null || videoComNovosDados.getTitulo() == null || videoComNovosDados.getTitulo().isEmpty()) {
             throw new IllegalArgumentException("Vídeo com Novos Dados não pode ser nulo e também não pode ter o título vazio");
         }
         List<Video> videos = findAll();
         try (BufferedWriter bw = new BufferedWriter(new FileWriter(file))) {
-            for (Video video : videos){
-                if (video.getTitulo().toLowerCase().trim().equals(videoOriginal.getTitulo().toLowerCase().trim())){
+            for (Video video : videos) {
+                if (video.getTitulo().toLowerCase().trim().equals(videoOriginal.getTitulo().toLowerCase().trim())) {
                     bw.write(videoComNovosDados.toString());
                     bw.newLine();
                 } else {
@@ -66,19 +66,20 @@ public class FileVideoRepositoryImpl implements VideoRepository {
 
     @Override
     public void deleteByTitulo(String titulo) {
-        if (titulo == null){
+        if (titulo == null) {
             throw new IllegalArgumentException("O título do vídeo não pode ser nulo");
         }
         List<Video> videos = findAll();
-        try (BufferedWriter bw = new BufferedWriter(new FileWriter(file))){
-            for (Video video : videos){
-                if (!video.getTitulo().toLowerCase().trim().equals(titulo.toLowerCase().trim())){
+        try (BufferedWriter bw = new BufferedWriter(new FileWriter(file))) {
+            for (Video video : videos) {
+                if (!video.getTitulo().toLowerCase().trim().equals(titulo.toLowerCase().trim())) {
                     bw.write(video.toString());
                     bw.newLine();
                 }
             }
-        } catch (IOException e){
+        } catch (IOException e) {
             System.out.println("Erro ao deletar vídeo");
         }
     }
+
 }
