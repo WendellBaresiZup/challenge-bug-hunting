@@ -9,4 +9,5 @@ public interface VideoService {
     List<Video> listVideos();
     List<Video> searchVideo(String query);
     void updateVideo(Video videoOriginal, Video videoNovosDados);
+    void deleteByTitulo(String titulo);
 }

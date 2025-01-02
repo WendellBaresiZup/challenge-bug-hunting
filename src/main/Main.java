@@ -54,7 +54,7 @@ public class Main {
                     editarVideo(videoManager);
                     break;
                 case 5:
-                    excluirVideo();
+                    excluirVideo(videoManager);
                     break;
                 case 6:
                     filtrarVideo();
@@ -179,10 +179,45 @@ public class Main {
 
     }
 
+    public static void excluirVideo(VideoManager videoManager){
+        System.out.println("=== Dicas Excluir o Video ===");
+        System.out.println("!!O título do vídeo não pode ser nulo!!");
 
+        System.out.println("Digite o título do vídeo: ");
+        String titulo = scanner.nextLine();
 
-    public static void excluirVideo(){
+        var videos = videoManager.pesquisarVideoPeloTitulo(titulo);
+        if (videos.isEmpty()) {
+            System.out.println("Título de vídeo não encontrado!");
+        } else if (videos.size() == 1){
+            var video = videos.get(0);
+            System.out.println("Vídeo encontrado: " + video);
 
+            System.out.print("Deseja excluir este vídeo? (S/N): ");
+            var simNao = scanner.nextLine();
+            if (simNao.equalsIgnoreCase("S")){
+                videoManager.excluirVideo(titulo);
+            } else {
+                System.out.println("Vídeo excluido com sucesso!");
+            }
+        } else {
+            System.out.println("Mais de um vídeo foi encontrado pelo título informado, por favor indicar o index do título desejado");
+            for (int i = 0; i < videos.size(); i++){
+                System.out.println("Index: " + i + " - " + videos.get(i));
+            }
+            int index = scanner.nextInt();
+            scanner.nextLine(); // quebra da linha
+            if (index < 0 || index >= videos.size()) {
+                System.out.println("Index inválido!!");
+                return;
+            }
+            var video = videos.get(index);
+            if (video == null){
+                System.out.println("Vídeo não encontrado na lista!!");
+            } else {
+                videoManager.excluirVideo(video.getTitulo());
+            }
+        }
     }
 
     public static void filtrarVideo(){

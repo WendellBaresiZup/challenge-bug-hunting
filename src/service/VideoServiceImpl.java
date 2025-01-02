@@ -51,5 +51,9 @@ public class VideoServiceImpl implements VideoService {
         repository.update(videoOriginal, videoComNovosDados);
     }
 
+    public void deleteByTitulo(String titulo){
+        repository.deleteByTitulo(titulo);
+    }
+
 
 }
