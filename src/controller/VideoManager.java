@@ -1,5 +1,6 @@
 package controller;
 
+import model.Categoria;
 import model.Video;
 import service.VideoService;
 
@@ -13,7 +14,7 @@ public class VideoManager {
         this.videoService = videoService;
     }
 
-    public void adicionarVideo(String titulo, String descricao, int duracao, String categoria, String dataPublicacao){
+    public void adicionarVideo(String titulo, String descricao, int duracao, Categoria categoria, String dataPublicacao){
         videoService.addVideo(new Video(titulo, descricao, duracao, categoria, dataPublicacao));
     }
 
@@ -33,6 +34,10 @@ public class VideoManager {
     public void excluirVideo(String titulo){
         videoService.deleteByTitulo(titulo);
         System.out.println("Vídeo excluído com sucesso");
+    }
+
+    public List<Video> pesquisarVideoPelaCategoria(Categoria query){
+        return videoService.searchVideo(String.valueOf(query));
     }
 
 }

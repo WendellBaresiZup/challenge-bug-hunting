@@ -8,6 +8,7 @@ public enum Categoria {
     Categoria(String descricao) {
     }
 
+
     public static Categoria categoriaDesejada(String string){
         try {
             return Categoria.valueOf(string.toUpperCase());
@@ -17,4 +18,5 @@ public enum Categoria {
         }
         return null;
     }
+
 }

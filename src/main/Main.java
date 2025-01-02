@@ -1,6 +1,7 @@
 package main;
 
 import controller.VideoManager;
+import model.Categoria;
 import model.Video;
 import repository.FileVideoRepositoryImpl;
 import service.VideoService;
@@ -57,7 +58,7 @@ public class Main {
                     excluirVideo(videoManager);
                     break;
                 case 6:
-                    filtrarVideo();
+                    filtrarVideo(videoManager);
                     break;
                 case 7:
                     ordenarVideo();
@@ -92,7 +93,7 @@ public class Main {
             System.out.print("Digite a duração do vídeo (em minutos): ");
             String duracao = scanner.nextLine();
             System.out.print("Digite a categoria do vídeo: ");
-            String categoria = scanner.nextLine();
+            Categoria categoria = Categoria.valueOf(scanner.nextLine());
             System.out.print("Digite a data de publicação (dd/MM/yyyy): ");
             String dataPublicacao = scanner.nextLine();
 
@@ -125,8 +126,8 @@ public class Main {
         String descricao = scanner.nextLine();
         System.out.print("Digite a Nova Duração do Vídeo (em minutos): ");
         String duracao = scanner.nextLine();
-        System.out.print("Digite a Nova Categoria do Vídeo(EX: Futebol/Comédia/Infantil): ");
-        String categoria = scanner.nextLine();
+        System.out.print("Digite a Nova Categoria do Vídeo(EX: Documentário, Filme, Série): ");
+        Categoria categoria = Categoria.valueOf(scanner.nextLine());
         System.out.print("Digite a Nova Data de Publicação (dd/MM/yyyy)");
         String dataPublicacao = scanner.nextLine();
 
@@ -220,7 +221,12 @@ public class Main {
         }
     }
 
-    public static void filtrarVideo(){
+    public static void filtrarVideo(VideoManager videoManager){
+            System.out.println("Digite a categoria que deseja filtrar: ");
+
+            //videoManager.pesquisarVideoPelaCategoria(query);
+            var videos = videoManager.pesquisarVideoPelaCategoria(query);
+            videos.forEach(System.out::println);
 
     }
 

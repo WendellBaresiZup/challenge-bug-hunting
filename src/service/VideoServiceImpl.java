@@ -1,5 +1,6 @@
 package service;
 
+import model.Categoria;
 import model.Video;
 import repository.VideoRepository;
 import strategy.SearchStrategy;
@@ -43,7 +44,7 @@ public class VideoServiceImpl implements VideoService {
 
     @Override
     public List<Video> searchVideo(String titulo){
-        return searchStrategy.search(repository.findAll(),titulo);
+        return searchStrategy.searchByTitle(repository.findAll(),titulo);
     }
 
     public void updateVideo(Video videoOriginal, Video videoComNovosDados){
@@ -53,6 +54,10 @@ public class VideoServiceImpl implements VideoService {
 
     public void deleteByTitulo(String titulo){
         repository.deleteByTitulo(titulo);
+    }
+
+    public List<Video> searchVideoByCategory(Categoria query){
+        return searchStrategy.searchByTitle(repository.findAll(), String.valueOf(query));
     }
 
 
