@@ -59,16 +59,40 @@ public class VideoServiceImpl implements VideoService {
     public void searchVideoByCategory(Categoria query){
         List<Video> videos = repository.findAll();
         List<Video> videosFilter = searchStrategy.searchByCategory(videos, query);
-        videosFilter.forEach(this::showDetails);
+        videosFilter.forEach(System.out::println);
     }
 
-    private void showDetails(Video video){
-        System.out.println("Titulo: " + video.getTitulo());
-        System.out.println("Descrição: " + video.getDescricao());
-        System.out.println("Duração: " + video.getDuracao());
-        System.out.println("Categoria: " + video.getCategoria());
-        System.out.println("Data de Publicação: " + video.getDataPublicacao());
+    @Override
+    public void relatorioEstatisticas() {
+        List<Video> videos = repository.findAll();
+        int totaldosVídeos = videos.stream().mapToInt(Video::getDuracao).sum();
+        System.out.println("Relatório de Estatísticas");
+        System.out.println("Quantidade de Vídeos: " + videos.size());
+        System.out.println("Duração total dos Vídeos: " + totaldosVídeos + " minutos");
+        System.out.println("Quantidade de Vídeos pela Categoria");
+        long count = 0L;
+        for (Video video1 : videos) {
+            if (video1.getCategoria() == Categoria.Documentario) {
+                count++;
+            }
+        }
+        System.out.println("Documentário: " + count);
+        long result = 0L;
+        for (Video video1 : videos) {
+            if (video1.getCategoria() == Categoria.Filme) {
+                result++;
+            }
+        }
+        System.out.println("Filme: " + result);
+        long count1 = 0L;
+        for (Video video : videos) {
+            if (video.getCategoria() == Categoria.Serie) {
+                count1++;
+            }
+        }
+        System.out.println("Serie: " + count1);
     }
+
 
 
 }
