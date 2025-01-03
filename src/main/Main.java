@@ -28,48 +28,69 @@ public class Main {
             int opcao = scanner.nextInt();
             scanner.nextLine(); // Consumir a quebra de linha
 
-            if (opcao == 1) {
-                System.out.print("Digite o título do vídeo: ");
-                String titulo = scanner.nextLine();
-                System.out.print("Digite a descrição do vídeo: ");
-                String descricao = scanner.nextLine();
-                System.out.print("Digite a duração do vídeo (em minutos): ");
-                int duracao = scanner.nextInt();
-                scanner.nextLine(); // Consumir a quebra de linha
-                System.out.print("Digite a categoria do vídeo: ");
-                String categoria = scanner.nextLine();
-                System.out.print("Digite a data de publicação (dd/MM/yyyy): ");
-                String dataStr = scanner.nextLine();
-
-                try {
-                    SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
-                    Date dataPublicacao = sdf.parse(dataStr);
-                    Video video = new Video(titulo, descricao, duracao, categoria, dataPublicacao);
-                    videoService.addVideo(video);
-                    System.out.println("Vídeo adicionado com sucesso!");
-                } catch (Exception e) {
-                    System.out.println("Erro ao adicionar vídeo.");
-                }
-            } else if (opcao == 2) {
-                List<Video> videos = videoService.listVideos();
-                for (Video video : videos) {
-                    System.out.println(video);
-                }
-            } else if (opcao == 3) {
-                System.out.print("Digite o título para busca: ");
-                String query = scanner.nextLine();
-                List<Video> resultados = searchStrategy.search(videoService.listVideos(), query);
-                for (Video video : resultados) {
-                    System.out.println(video);
-                }
-            } else if (opcao == 4) {
-                System.out.println("Saindo do sistema...");
-                break;
-            } else {
-                System.out.println("Opção inválida.");
-            }
         }
+    }
 
         scanner.close();
     }
+
+    public static void adicionarVideo(){
+        System.out.print("Digite o título do vídeo: ");
+        String titulo = scanner.nextLine();
+        System.out.print("Digite a descrição do vídeo: ");
+        String descricao = scanner.nextLine();
+        System.out.print("Digite a duração do vídeo (em minutos): ");
+        int duracao = scanner.nextInt();
+        scanner.nextLine(); // Consumir a quebra de linha
+        System.out.print("Digite a categoria do vídeo: ");
+        String categoria = scanner.nextLine();
+        System.out.print("Digite a data de publicação (dd/MM/yyyy): ");
+        String dataStr = scanner.nextLine();
+
+        try {
+            SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+            Date dataPublicacao = sdf.parse(dataStr);
+            Video video = new Video(titulo, descricao, duracao, categoria, dataPublicacao);
+            videoService.addVideo(video);
+            System.out.println("Vídeo adicionado com sucesso!");
+        } catch (Exception e) {
+            System.out.println("Erro ao adicionar vídeo.");
+        }
+    }
+
+    public static void listarVideos(){
+        List<Video> videos = videoService.listVideos();
+        for (Video video : videos) {
+            System.out.println(video);
+    }
+
+    public static void buscarVideo(){
+            System.out.print("Digite o título para busca: ");
+            String query = scanner.nextLine();
+            List<Video> resultados = searchStrategy.search(videoService.listVideos(), query);
+            for (Video video : resultados) {
+                System.out.println(video);
+            }
+    }
+
+    public static void editarVideo(){
+
+    }
+
+    public static void excluirVideo(){
+
+    }
+
+    public static void filtrarVideo(){
+
+    }
+
+    public static void ordenarVideo(){
+
+    }
+
+    public static void exibirRelatorio(){
+
+    }
 }
+
