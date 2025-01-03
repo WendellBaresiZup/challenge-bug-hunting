@@ -13,24 +13,65 @@ import java.util.List;
 import java.util.Scanner;
 
 public class Main {
+
+    static Scanner scanner = new Scanner(System.in);
+
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
         VideoService videoService = new VideoServiceImpl(new FileVideoRepository("videos.txt"));
         SearchStrategy searchStrategy = new TitleSearchStrategy();
 
-        while (true) {
+        int menu = 0;
+
+        while (menu != 9) {
             System.out.println("\n=== Sistema de Gerenciamento de Vídeos ===");
-            System.out.println("1. Adicionar vídeo");
-            System.out.println("2. Listar vídeos");
-            System.out.println("3. Pesquisar vídeo por título");
-            System.out.println("4. Sair");
             System.out.print("Escolha uma opção: ");
-            int opcao = scanner.nextInt();
+            System.out.println("1. Adicionar Vídeo");
+            System.out.println("2. Listar Vídeos");
+            System.out.println("3. Pesquisar Vídeo por Título");
+            System.out.println("4. Editar Vídeo");
+            System.out.println("5. Excluir Vídeo");
+            System.out.println("6. Filtar Vídeo");
+            System.out.println("7. Ordenar vídeo");
+            System.out.println("8. Exibir Relatório de Estatísticas");
+            System.out.println("9. Sair");
+
+            menu = scanner.nextInt();
             scanner.nextLine(); // Consumir a quebra de linha
 
+            switch (menu){
+                case 1:
+                    adicionarVideo();
+                    break;
+                case 2:
+                    listarVideos();
+                    break;
+                case 3:
+                    buscarVideo();
+                    break;
+                case 4:
+                    editarVideo();
+                    break;
+                case 5:
+                    excluirVideo();
+                    break;
+                case 6:
+                    filtrarVideo();
+                    break;
+                case 7:
+                    ordenarVideo();
+                    break;
+                case 8:
+                    exibirRelatorio();
+                    break;
+                case 9:
+                    System.out.println("Saindo do Sistema");
+                    break;
+                default:
+                    System.out.println("Opção não existe");
+                    break;
+            }
         }
-    }
-
         scanner.close();
     }
 
@@ -58,10 +99,11 @@ public class Main {
         }
     }
 
-    public static void listarVideos(){
+    public static void listarVideos() {
         List<Video> videos = videoService.listVideos();
         for (Video video : videos) {
             System.out.println(video);
+        }
     }
 
     public static void buscarVideo(){
