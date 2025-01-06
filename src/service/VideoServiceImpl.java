@@ -25,7 +25,7 @@ public class VideoServiceImpl implements VideoService {
         if (video.getDescricao() == null || video.getDescricao().isEmpty()){
             throw new IllegalArgumentException("A Descrição do Vídeo Não Pode Ser Vazia!!");
         }
-        if (video.getDuracao() > 0){
+        if (video.getDuracao() <= 0){
             throw new IllegalArgumentException("A Duração do Vídeo tem que ser um número positivo e maior que zero!!");
         }
     }

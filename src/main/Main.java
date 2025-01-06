@@ -25,15 +25,15 @@ public class Main {
 
         while (menu != 9) {
             System.out.println("\n=== Sistema de Gerenciamento de Vídeos ===");
-            System.out.print("Escolha uma opção: ");
+            System.out.println("Escolha uma opção: ");
             System.out.println("1. Adicionar vídeo");
             System.out.println("2. Listar vídeos");
             System.out.println("3. Pesquisar vídeo por título");
-            System.out.println("4. Pesquisar vídeo por título");
-            System.out.println("5. Pesquisar vídeo por título");
-            System.out.println("6. Pesquisar vídeo por título");
-            System.out.println("7. Pesquisar vídeo por título");
-            System.out.println("8. Pesquisar vídeo por título");
+            System.out.println("4. Editar vídeo");
+            System.out.println("5. Excluir vídeo");
+            System.out.println("6. Filtrar vídeo");
+            System.out.println("7. Ordenar vídeo");
+            System.out.println("8. Exibir Relatório de Estatísticas");
             System.out.println("9. Sair");
 
             menu = scanner.nextInt();
@@ -44,7 +44,7 @@ public class Main {
                     adicionarVideo(videoManager);
                     break;
                 case 2:
-                    listarVideo();
+                    listarVideo(videoManager);
                     break;
                 case 3:
                     buscarVideo();
@@ -100,20 +100,13 @@ public class Main {
         }
     }
 
-    public static void listarVideo(){
-        List<Video> videos = videoService.listVideos();
-        for (Video video : videos) {
-            System.out.println(video);
-        }
+    public static void listarVideo(VideoManager videoManager){
+        var videos = videoManager.listarVideo();
+        videos.forEach(System.out::println);
     }
 
     public static void buscarVideo(){
-        System.out.print("Digite o título para busca: ");
-        String query = scanner.nextLine();
-        List<Video> resultados = searchStrategy.search(videoService.listVideos(), query);
-        for (Video video : resultados) {
-            System.out.println(video);
-        }
+
     }
 
     public static void editarVideo(){
