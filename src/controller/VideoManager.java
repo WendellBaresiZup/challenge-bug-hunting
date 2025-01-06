@@ -34,4 +34,8 @@ public class VideoManager {
         videoService.deleteByTitulo(titulo);
         System.out.println("Vídeo excluído com sucesso!");
     }
+
+    public void relatorioEstatisticas(){
+        videoService.relatorioEstatisticas();
+    }
 }

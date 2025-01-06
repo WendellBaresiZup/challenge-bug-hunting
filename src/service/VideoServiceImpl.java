@@ -51,4 +51,13 @@ public class VideoServiceImpl implements VideoService {
     public void deleteByTitulo(String titulo){
         repository.deleteByTitulo(titulo);
     }
+
+
+    public void relatorioEstatisticas(){
+        List<Video> videos = repository.findAll();
+        int totalDosVideos = videos.stream().mapToInt(Video::getDuracao).sum();
+        System.out.println("== Relatório de Estatísticas ==");
+        System.out.println("Quantidade de Vídeos: " + videos.size());
+        System.out.println("Duração total dos Vídeos: " + totalDosVideos + " minutos");
+    }
 }

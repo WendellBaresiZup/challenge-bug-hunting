@@ -59,7 +59,7 @@ public class Main {
                     ordenarVideo();
                     break;
                 case 8:
-                    exibirRelatorio();
+                    exibirRelatorio(videoManager);
                     break;
                 case 9:
                     System.out.println("Saindo do sistema...");
@@ -220,7 +220,7 @@ public class Main {
 
     }
 
-    public static void exibirRelatorio(){
-
+    public static void exibirRelatorio(VideoManager videoManager){
+        videoManager.relatorioEstatisticas();
     }
 }
