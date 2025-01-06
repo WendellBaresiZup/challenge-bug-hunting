@@ -63,4 +63,22 @@ public class VideoRepositoryImpl implements VideoRepository {
             System.out.println("Erro ao Atualizar o Vídeo!!");
         }
     }
+
+    @Override
+    public void deleteByTitulo(String titulo){
+        if (titulo == null){
+            throw new IllegalArgumentException("O Título não pode ser nulo!!");
+        }
+        List<Video> videos = findAll();
+        try (BufferedWriter bw = new BufferedWriter(new FileWriter(file))){
+            for (Video video : videos){
+                if (!video.getTitulo().toLowerCase().trim().equals(titulo.toLowerCase().trim())){
+                    bw.write(video.toString());
+                    bw.newLine();
+                }
+            }
+        }catch (IOException e){
+            System.out.println("Erro ao deletar o vídeo!!");
+        }
+    }
 }

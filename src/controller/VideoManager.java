@@ -29,4 +29,9 @@ public class VideoManager {
         videoService.updateVideo(videoOriginal, videoNovosDados);
         System.out.println("Vídeo atualizado com sucesso: " + videoNovosDados);
     }
+
+    public void excluirVideo(String titulo){
+        videoService.deleteByTitulo(titulo);
+        System.out.println("Vídeo excluído com sucesso!");
+    }
 }
