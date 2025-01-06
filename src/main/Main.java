@@ -1,11 +1,12 @@
 package main;
 
+import controller.VideoManager;
 import model.Video;
-import repository.FileVideoRepository;
+import repository.FileVideoRepositoryImpl;
 import service.VideoService;
 import service.VideoServiceImpl;
 import strategy.SearchStrategy;
-import strategy.TitleSearchStrategy;
+import strategy.TitleSearchStrategyImpl;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -13,10 +14,12 @@ import java.util.List;
 import java.util.Scanner;
 
 public class Main {
+        static Scanner scanner = new Scanner(System.in);
     public static void main(String[] args) {
-        Scanner scanner = new Scanner(System.in);
-        VideoService videoService = new VideoServiceImpl(new FileVideoRepository("videos.txt"));
-        SearchStrategy searchStrategy = new TitleSearchStrategy();
+        FileVideoRepositoryImpl fileVideoRepository = new FileVideoRepositoryImpl("videos.txt");
+        SearchStrategy searchStrategy = new TitleSearchStrategyImpl();
+        VideoService videoService = new VideoServiceImpl(fileVideoRepository, searchStrategy);
+        VideoManager videoManager = new VideoManager(videoService);
 
         int menu = 0;
 
@@ -38,7 +41,7 @@ public class Main {
 
             switch (menu){
                 case 1:
-                    adicionarVideo();
+                    adicionarVideo(videoManager);
                     break;
                 case 2:
                     listarVideo();
@@ -73,26 +76,27 @@ public class Main {
         scanner.close();
     }
 
-    public static void adicionarVideo(){
-        System.out.print("Digite o título do vídeo: ");
-        String titulo = scanner.nextLine();
-        System.out.print("Digite a descrição do vídeo: ");
-        String descricao = scanner.nextLine();
-        System.out.print("Digite a duração do vídeo (em minutos): ");
-        int duracao = scanner.nextInt();
-        scanner.nextLine(); // Consumir a quebra de linha
-        System.out.print("Digite a categoria do vídeo: ");
-        String categoria = scanner.nextLine();
-        System.out.print("Digite a data de publicação (dd/MM/yyyy): ");
-        String dataStr = scanner.nextLine();
+    public static void adicionarVideo(VideoManager videoManager){
         try {
-            SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
-            Date dataPublicacao = sdf.parse(dataStr);
-            Video video = new Video(titulo, descricao, duracao, categoria, dataPublicacao);
-            videoService.addVideo(video);
+            System.out.println("-- Dicas de Como Adicionar o Vídeo --");
+            System.out.println("O Título e a Descrição do Vídeo não podem ser vazio!!");
+            System.out.println("A Duração do Vídeo tem que ser número positivo ou maior que zero!!");
+            System.out.print("Digite o título do vídeo: ");
+            String titulo = scanner.nextLine();
+            System.out.print("Digite a descrição do vídeo: ");
+            String descricao = scanner.nextLine();
+            System.out.print("Digite a duração do vídeo (em minutos): ");
+            int duracao = scanner.nextInt();
+            scanner.nextLine(); // Consumir a quebra de linha
+            System.out.print("Digite a categoria do vídeo: ");
+            String categoria = scanner.nextLine();
+            System.out.print("Digite a data de publicação (dd/MM/yyyy): ");
+            String dataPublicacao = scanner.nextLine();
+
+            videoManager.adicionarVideo(titulo, descricao, duracao, categoria, dataPublicacao);
             System.out.println("Vídeo adicionado com sucesso!");
-        } catch (Exception e) {
-            System.out.println("Erro ao adicionar vídeo.");
+        } catch (IllegalArgumentException e) {
+            System.out.println("Erro ao adicionar vídeo." + e.getMessage());
         }
     }
 

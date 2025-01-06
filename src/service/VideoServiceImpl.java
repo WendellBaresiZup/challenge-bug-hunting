@@ -32,6 +32,7 @@ public class VideoServiceImpl implements VideoService {
 
     @Override
     public void addVideo(Video video) {
+        validarVideo(video);
         repository.save(video);
     }
 
