@@ -64,8 +64,7 @@ public class Video {
 
     @Override
     public String toString() {
-        SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
-        return titulo + ";" + descricao + ";" + duracao + ";" + categoria + ";" + sdf.format(dataPublicacao);
+        return titulo + ";" + descricao + ";" + duracao + ";" + categoria + ";" + dataPublicacao.format(DATE_TIME_FORMATTER);
     }
 
     public static Video fromString(String linha) {
