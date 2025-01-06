@@ -20,4 +20,13 @@ public class VideoManager {
     public List<Video> listarVideo(){
         return videoService.listVideos();
     }
+
+    public List<Video> pesquisarVideoTitulo(String query){
+        return videoService.searchVideo(query);
+    }
+
+    public void editarVideo(Video videoOriginal, Video videoNovosDados){
+        videoService.updateVideo(videoOriginal, videoNovosDados);
+        System.out.println("Vídeo atualizado com sucesso: " + videoNovosDados);
+    }
 }

@@ -6,10 +6,10 @@ import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
 
-public class FileVideoRepositoryImpl implements VideoRepository {
+public class VideoRepositoryImpl implements VideoRepository {
     private final File file;
 
-    public FileVideoRepositoryImpl(String filePath) {
+    public VideoRepositoryImpl(String filePath) {
         this.file = new File(filePath);
     }
 
@@ -41,5 +41,26 @@ public class FileVideoRepositoryImpl implements VideoRepository {
             // Ignorar erros por enquanto
         }
         return videos;
+    }
+
+    @Override
+    public void update(Video videoOriginal, Video videoComNovosDados){
+        if (videoComNovosDados == null || videoComNovosDados.getTitulo() == null || videoComNovosDados.getTitulo().isEmpty()){
+            throw new IllegalArgumentException("Vídeo com Novos Dados não pode ser nulo ou ter o título vazio!!");
+        }
+        List<Video> videos = findAll();
+        try (BufferedWriter bw = new BufferedWriter(new FileWriter(file))){
+            for (Video video : videos){
+                if (video.getTitulo().toLowerCase().trim().equals(videoOriginal.getTitulo().toLowerCase().trim())){
+                    bw.write(videoComNovosDados.toString());
+                    bw.newLine();
+                } else {
+                    bw.write(video.toString());
+                    bw.newLine();
+                }
+            }
+        } catch (IOException e){
+            System.out.println("Erro ao Atualizar o Vídeo!!");
+        }
     }
 }

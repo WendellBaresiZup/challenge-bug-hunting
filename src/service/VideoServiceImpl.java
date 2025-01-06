@@ -30,14 +30,21 @@ public class VideoServiceImpl implements VideoService {
         }
     }
 
-    @Override
     public void addVideo(Video video) {
         validarVideo(video);
         repository.save(video);
     }
 
-    @Override
     public List<Video> listVideos() {
         return repository.findAll();
+    }
+
+    public List<Video> searchVideo(String titulo){
+        return searchStrategy.search(repository.findAll(), titulo);
+    }
+
+    public void updateVideo(Video videoOriginal, Video videoComNovosDados){
+        validarVideo(videoComNovosDados);
+        repository.update(videoOriginal, videoComNovosDados);
     }
 }

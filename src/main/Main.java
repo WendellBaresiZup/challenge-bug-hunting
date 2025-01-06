@@ -2,22 +2,19 @@ package main;
 
 import controller.VideoManager;
 import model.Video;
-import repository.FileVideoRepositoryImpl;
+import repository.VideoRepositoryImpl;
 import service.VideoService;
 import service.VideoServiceImpl;
 import strategy.SearchStrategy;
-import strategy.TitleSearchStrategyImpl;
+import strategy.SearchStrategyImpl;
 
-import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.List;
 import java.util.Scanner;
 
 public class Main {
         static Scanner scanner = new Scanner(System.in);
     public static void main(String[] args) {
-        FileVideoRepositoryImpl fileVideoRepository = new FileVideoRepositoryImpl("videos.txt");
-        SearchStrategy searchStrategy = new TitleSearchStrategyImpl();
+        VideoRepositoryImpl fileVideoRepository = new VideoRepositoryImpl("videos.txt");
+        SearchStrategy searchStrategy = new SearchStrategyImpl();
         VideoService videoService = new VideoServiceImpl(fileVideoRepository, searchStrategy);
         VideoManager videoManager = new VideoManager(videoService);
 
@@ -47,10 +44,10 @@ public class Main {
                     listarVideo(videoManager);
                     break;
                 case 3:
-                    buscarVideo();
+                    buscarVideo(videoManager);
                     break;
                 case 4:
-                    editarVideo();
+                    editarVideo(videoManager);
                     break;
                 case 5:
                     excluirVideo();
@@ -105,12 +102,71 @@ public class Main {
         videos.forEach(System.out::println);
     }
 
-    public static void buscarVideo(){
+    public static void buscarVideo(VideoManager videoManager){
+        System.out.print("Digite o Título do Vídeo para busca: ");
+        String titulo = scanner.nextLine();
 
+        var videos = videoManager.pesquisarVideoTitulo(titulo);
+        videos.forEach(System.out::println);
     }
 
-    public static void editarVideo(){
+    public static void editarVideo(VideoManager videoManager){
+        System.out.println("-- Dicas de Como Editar o Vídeo --");
+        System.out.println("O Título e a Descrição do Vídeo não podem ser vazio!!");
+        System.out.println("A Duração do Vídeo tem que ser número positivo ou maior que zero!!");
 
+        System.out.print("Digite o título do vídeo: ");
+        String titulo = scanner.nextLine();
+
+        var videos = videoManager.pesquisarVideoTitulo(titulo);
+        if (videos.isEmpty()){
+            System.out.println("Vídeo não encontrado!");
+        } else if (videos.size() == 1) {
+            var video = videos.get(0);
+            System.out.println("Vídeo encontrado: " + video);
+
+            System.out.println("Deseja editar este vídeo? (S/N): ");
+            var simNao = scanner.nextLine();
+            if (simNao.equalsIgnoreCase("S")){
+                var novosDadosDoVideo = solicitaNovosDadosDoVideo();
+                videoManager.editarVideo(video, novosDadosDoVideo);
+            } else {
+                System.out.println("Edição Cancelada!");
+            }
+        } else {
+            System.out.println("Mais de um vídeo encontrado pelo título informado, por favor indicar o index do item a ser editado: ");
+            for (int i = 0; i < videos.size(); i++){
+                System.out.println("Index: " + i + " - " + videos.get(i));
+            }
+            int index = scanner.nextInt();
+            scanner.nextLine(); // Consumir quebra de linha
+            if (index < 0 || index >= videos.size()){
+                System.out.println("Index Inválido!");
+                return;
+            }
+            var video = videos.get(index);
+            if (video == null){
+                System.out.println("Vídeo não encontrado na lista!");
+            } else {
+                var novosDadosDoVideo = solicitaNovosDadosDoVideo();
+                videoManager.editarVideo(video, novosDadosDoVideo);
+            }
+        }
+    }
+
+    public static Video solicitaNovosDadosDoVideo(){
+        System.out.print("Digite o Novo Título do Vídeo: ");
+        String titulo = scanner.nextLine();
+        System.out.print("Digite a Nova Descrição do Vídeo: ");
+        String descricao = scanner.nextLine();
+        System.out.print("Digite a Nova Duração do Vídeo (em minutos): ");
+        String duracao = scanner.nextLine();
+        System.out.print("Digite a Nova Categoria do Vídeo: ");
+        String categoria = scanner.nextLine();
+        System.out.print("Digite a Nova Data de Publicação (dd/MM/yyyy): ");
+        String dataPublicacao = scanner.nextLine();
+
+        return new Video(titulo, descricao, Integer.parseInt(duracao), categoria, dataPublicacao);
     }
 
     public static void excluirVideo(){
